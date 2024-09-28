@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import "./index.css";
 import QuestionList from "./components/QuestionList.jsx";
 import Result from "./components/Result.jsx";
+import { quizQuestions } from "../seeds/questions";
 
 function App() {
   const [showResults, setShowResults] = useState(false);
+  const [answers, setAnswers] = useState([]);
 
   const handleQuizComplete = () => {
     setShowResults(true);
@@ -19,9 +21,13 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       {!showResults ? (
-        <QuestionList onComplete={handleQuizComplete} />
+        <QuestionList
+          answers={answers}
+          setAnswers={setAnswers}
+          handleQuizComplete={handleQuizComplete}
+        />
       ) : (
-        <Result score={score} />
+        <Result score={score} quizQuestions={quizQuestions} />
       )}
     </div>
   );

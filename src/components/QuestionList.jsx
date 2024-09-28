@@ -2,13 +2,16 @@ import Question from "./Question";
 import { quizQuestions } from "../../seeds/questions";
 import { useState } from "react";
 
-const QuestionList = () => {
+const QuestionList = ({ handleQuizComplete, answers, setAnswers }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState([]);
 
-  const handleAnswer = (answerIndex) => {
-    setAnswers([...answers, answerIndex]);
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+  const handleAnswer = (answer) => {
+    setAnswers([...answers, answer]);
+    if (currentQuestionIndex === quizQuestions.length - 1) {
+      handleQuizComplete();
+    } else {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
   };
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
@@ -21,17 +24,27 @@ const QuestionList = () => {
       {currentQuestionIndex > 0 && (
         <button
           onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}
-          className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 mb-4"
+          className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 mb-4 mr-2"
         >
           Previous
         </button>
       )}
+      {currentQuestionIndex < quizQuestions.length - 1 && (
+        <button
+          onClick={() => {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+          }}
+          className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300 mb-4"
+        >
+          Next
+        </button>
+      )}
       {currentQuestionIndex === quizQuestions.length - 1 && (
         <button
-          onClick={() => alert("Quiz completed!")}
+          onClick={handleQuizComplete}
           className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none"
         >
-          Finish Quiz
+          Submit Quiz
         </button>
       )}
     </div>

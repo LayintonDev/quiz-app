@@ -1,4 +1,4 @@
-const Result = ({ score }) => {
+const Result = ({ score, quizQuestions }) => {
   const percentage = Math.round((score / quizQuestions.length) * 100);
 
   return (
